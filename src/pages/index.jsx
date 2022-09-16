@@ -1,47 +1,62 @@
 import React, { useState, useEffect } from "react";
+import { Container, Row, Col } from "reactstrap";
 import { v4 as uuidv4 } from "uuid";
-
 import TodoAdd from "../components/TodoAdd";
 import TodoList from "../components/TodoList";
+import { getAllNotes } from "../utils/local-data";
 
 const Index = () => {
+  // console.log(getAllNotes());
   const LOCAL_STORAGE_KEY = "list-todos";
-  // buat const todos untuk useState
-  const [todos, setTodos] = useState([]);
+  // state for initial data
+  const [todos, setTodos] = useState(getAllNotes());
+
   // input const todo ke todos
   const [todo, setTodo] = useState({
     id: "",
-    name: "",
-    desc: "",
+    title: "",
+    body: "",
+    createdAt: Date(),
+    archived: false,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!todo.name || !todo.desc) {
+    if (!todo.title || !todo.body) {
       alert("Please fill in all fields");
       return;
     } else if (!todo.id) {
+      //add
       addTodoHandler(todo);
     } else {
+      //update
       const updatedTodos = todos.map((newTodo) =>
         newTodo.id === todo.id
-          ? { ...newTodo, name: todo.name, desc: todo.desc }
+          ? { ...newTodo, title: todo.title, body: todo.body }
           : newTodo
       );
       setTodos(updatedTodos);
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedTodos));
     }
+    //reset text after update
     setTodo({
-      id: "",
-      name: "",
-      desc: "",
+      title: "",
+      body: "",
     });
   };
 
   // buat func add dengan parameter dari todo
   const addTodoHandler = (todo) => {
     // isi useState setTodos dengan data
-    const newTodo = [{ id: uuidv4(), name: todo.name, desc: todo.desc }];
+    const newTodo = [
+      {
+        id: uuidv4(),
+        title: todo.title,
+        body: todo.body,
+        createdAt: Date(),
+        archived: false,
+      },
+    ];
     setTodos([...todos, ...newTodo]);
     localStorage.setItem(
       LOCAL_STORAGE_KEY,
@@ -56,7 +71,7 @@ const Index = () => {
   };
 
   const updateTodoHandler = (id) => {
-    const updatedTodos = todos.find((todo) => todo.id == id);
+    const updatedTodos = todos.find((todo) => todo.id === id);
     setTodo(updatedTodos);
   };
 
@@ -66,20 +81,26 @@ const Index = () => {
   }, [setTodos]);
 
   return (
-    <div>
-      <h1>Hello, Create Your Activity</h1>
-      <TodoAdd
-        // addHandler={addTodoHandler}
-        todo={todo}
-        setTodo={setTodo}
-        handleSubmit={handleSubmit}
-      />
-      <TodoList
-        todos={todos}
-        deleteTodos={deleteTodoHandler}
-        updateTodos={updateTodoHandler}
-      />
-    </div>
+    <Container>
+      <Row>
+        <Col className="bg-light border">
+          <h1>Hello, Create Your Activity</h1>
+          <TodoAdd
+            // addHandler={addTodoHandler}
+            todo={todo}
+            setTodo={setTodo}
+            handleSubmit={handleSubmit}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <TodoList
+          todos={todos}
+          deleteTodos={deleteTodoHandler}
+          updateTodos={updateTodoHandler}
+        />
+      </Row>
+    </Container>
   );
 };
 

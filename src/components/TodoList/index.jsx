@@ -1,11 +1,9 @@
 import React from "react";
 import TodoCard from "../TodoCard";
-
-import "./styles.css";
+import PropTypes from "prop-types";
 
 const Index = (props) => {
-  console.log("props from list", props);
-
+  const { todos, deleteTodos, updateTodos } = props;
   const _deleteTodoHandler = (id) => {
     props.deleteTodos(id);
   };
@@ -15,20 +13,29 @@ const Index = (props) => {
   };
 
   return (
-    <div>
+    <>
       {props.todos.map((todo) => {
         return (
           <TodoCard
             key={todo.id}
-            name={todo.name}
-            desc={todo.desc}
+            id={todo.id}
+            title={todo.title}
+            body={todo.body}
+            date={todo.createdAt}
             deleteHandler={() => _deleteTodoHandler(todo.id)}
             updateHandler={() => _updateTodoHandler(todo.id)}
           />
         );
       })}
-    </div>
+    </>
   );
+};
+
+// prop types TodoList
+Index.propTypes = {
+  todos: PropTypes.array,
+  deleteTodos: PropTypes.func,
+  updateTodos: PropTypes.func,
 };
 
 export default Index;
