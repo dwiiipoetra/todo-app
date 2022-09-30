@@ -1,3 +1,4 @@
+import "../../../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 import React from "react";
 import { Link } from "react-router-dom";
 import { showFormattedDate } from "../../utils/index";
@@ -11,10 +12,10 @@ import {
   CardText,
   Button,
 } from "reactstrap";
-import "../../../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 
 const Index = (props) => {
   const { id, title, body, date } = props;
+
   return (
     <Col className="col-3">
       <Card
@@ -29,9 +30,9 @@ const Index = (props) => {
         <CardBody>
           <CardTitle tag="h5">{title.toUpperCase()}</CardTitle>
           <CardText>{body}</CardText>
-          <div class="btn-group" role="group" aria-label="Basic example">
+          <div className="btn-group" role="group" aria-label="Basic example">
             <Link className="btn btn-sm btn-dark" to={`/note/${id}`}>
-              <i class="bi bi-eye"></i> View
+              <i className="bi bi-eye"></i> View
             </Link>
             <Button
               size="sm"

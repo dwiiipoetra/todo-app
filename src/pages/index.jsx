@@ -83,7 +83,7 @@ const Index = () => {
   return (
     <Container>
       <Row>
-        <Col className="bg-light border">
+        <Col className="bg-light border mt-5 pt-5 pb-5">
           <h1>Hello, Create Your Activity</h1>
           <TodoAdd
             // addHandler={addTodoHandler}
